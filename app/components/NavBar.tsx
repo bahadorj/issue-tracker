@@ -6,10 +6,9 @@ import {
   Box,
   Divider,
   Stack,
-  useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const links = [
   { label: "Dashboard", url: "/dashboard" },
@@ -17,11 +16,7 @@ const links = [
 ];
 
 const NavBar = () => {
-  const theme = useTheme();
-  const [value, setValue] = useState<string | null>(null);
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
+  const path = usePathname();
 
   return (
     <Box>
@@ -47,8 +42,7 @@ const NavBar = () => {
 
         <BottomNavigation
           showLabels
-          value={value}
-          onChange={handleChange}
+          value={links.find((link) => link.url === path)?.label}
         >
           {links.map((link) => (
             <BottomNavigationAction
@@ -61,6 +55,7 @@ const NavBar = () => {
           ))}
         </BottomNavigation>
       </Stack>
+      {path}
       <Divider />
     </Box>
   );
