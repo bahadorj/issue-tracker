@@ -1,16 +1,7 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import NavBar from "./components/NavBar";
+import { Container, CssBaseline } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,10 +15,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+      <body>
+        <AppRouterCacheProvider>
+          <CssBaseline enableColorScheme />
+          <Container
+            component="main"
+            role="main"
+            maxWidth="xl"
+            fixed
+            sx={
+              {
+                // bgcolor: "gray",
+                // textAlign: "center",
+              }
+            }
+          >
+            <NavBar />
+            {children}
+          </Container>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
