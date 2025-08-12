@@ -1,6 +1,13 @@
 "use client";
 
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -18,6 +25,7 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const {
     register,
@@ -31,9 +39,11 @@ const NewIssuePage = () => {
     <Box
       onSubmit={handleSubmit(async (data) => {
         try {
+          setSubmitting(true);
           await axios.post("/api/issues", data);
           router.push("/issues");
         } catch (error) {
+          setSubmitting(false);
           setError("Unexpected Error");
         }
       })}
@@ -64,11 +74,18 @@ const NewIssuePage = () => {
         <Alert severity="error">{errors.description.message}</Alert>
       )}
       <Button
+        disabled={submitting}
         onClick={() => setError("")}
         type="submit"
         variant="contained"
       >
         Submit New Issue
+        {submitting && (
+          <CircularProgress
+            size={20}
+            color="inherit"
+          />
+        )}
       </Button>
 
       {/* Alert */}
