@@ -5,16 +5,27 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createIssueSchema } from "@/app/validationSchema";
+import { z } from "zod";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>;
+
+// interface IssueForm {
+//   title: string;
+//   description: string;
+// }
 
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  const { register, handleSubmit } = useForm<IssueForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema),
+  });
 
   return (
     <Box
@@ -38,6 +49,7 @@ const NewIssuePage = () => {
         size="small"
         margin="dense"
       />
+      {errors.title && <Alert severity="error">{errors.title.message}</Alert>}
       <TextField
         {...register("description")}
         fullWidth
@@ -48,6 +60,9 @@ const NewIssuePage = () => {
         margin="dense"
         rows={3}
       />
+      {errors.description && (
+        <Alert severity="error">{errors.description.message}</Alert>
+      )}
       <Button
         onClick={() => setError("")}
         type="submit"
