@@ -56,7 +56,7 @@ const NavBar = () => {
         </BottomNavigation>
       </Stack>
       {path}
-      <Divider />
+      <Divider sx={{ marginBottom: "20px" }} />
     </Box>
   );
 };
