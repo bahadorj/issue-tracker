@@ -1,10 +1,31 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+"use client";
+
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
+interface IssueForm {
+  title: string;
+  description: string;
+}
 
 const NewIssuePage = () => {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<IssueForm>();
+
   return (
-    <Box sx={{ width: 400 }}>
+    <Box
+      onSubmit={handleSubmit(async (data) => {
+        await axios.post("/api/issues", data);
+        router.push("/issues");
+      })}
+      component={"form"}
+      sx={{ width: 400 }}
+    >
       <Typography variant="h3">New Issue</Typography>
       <TextField
+        {...register("title")}
         fullWidth
         variant="outlined"
         label="Issue"
@@ -12,16 +33,21 @@ const NewIssuePage = () => {
         margin="dense"
       />
       <TextField
+        {...register("description")}
         fullWidth
         variant="outlined"
         label="Description"
         size="small"
         multiline
-        maxRows={3}
         margin="dense"
         rows={3}
       />
-      <Button variant="contained">Submit New Issue</Button>
+      <Button
+        type="submit"
+        variant="contained"
+      >
+        Submit New Issue
+      </Button>
     </Box>
   );
 };
