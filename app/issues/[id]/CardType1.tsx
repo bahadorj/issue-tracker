@@ -1,16 +1,18 @@
 "use client";
 
-import { ExpandMore } from "@mui/icons-material";
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Chip,
   Collapse,
-  IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
+import { statusColor } from "@/app/components/consts";
+
 import React, { useReducer } from "react";
 
 const CardType1 = ({ issue }) => {
@@ -23,9 +25,16 @@ const CardType1 = ({ issue }) => {
         subheader={`ID: ${issue.id}`}
       />
       <CardContent>
-        <Typography>{issue.status}</Typography>
-        <Typography variant="body2">{`Created at: ${issue.createdAt.toISOString()}`}</Typography>
-        <Typography variant="body2">{`Updated at: ${issue.updatedAt.toISOString()}`}</Typography>
+        <Chip
+          sx={{ marginBottom: 1 }}
+          size="small"
+          label={issue.status}
+          color={statusColor[issue.status]}
+        ></Chip>
+        <Stack>
+          <Typography variant="caption">{`Created at: ${issue.createdAt.toISOString()}`}</Typography>
+          <Typography variant="caption">{`Updated at: ${issue.updatedAt.toISOString()}`}</Typography>
+        </Stack>
       </CardContent>
       <CardActions sx={{ flexDirection: "row-reverse" }}>
         <Button
@@ -38,7 +47,13 @@ const CardType1 = ({ issue }) => {
       </CardActions>
       <Collapse in={expand}>
         <CardContent>
-          <Typography>{issue.description}</Typography>
+          <Typography variant="h6">Description</Typography>
+          <Typography
+            marginInlineStart={1}
+            variant="body2"
+          >
+            {issue.description}
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>

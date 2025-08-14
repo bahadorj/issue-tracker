@@ -7,26 +7,11 @@ import {
   GridRenderCellParams,
   GridRowsProp,
 } from "@mui/x-data-grid";
+import { statusColor } from "@/app/components/consts";
 
 interface IssueTableProps {
   rows: GridRowsProp;
 }
-
-const statusColor: Record<
-  string,
-  | "success"
-  | "info"
-  | "error"
-  | "default"
-  | "primary"
-  | "secondary"
-  | "warning"
-  | undefined
-> = {
-  OPEN: "success",
-  IN_PROGRESS: "info",
-  CLOSED: "error",
-};
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 50 },
