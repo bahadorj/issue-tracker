@@ -1,9 +1,9 @@
 import { prisma } from "@/prisma/prisma";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import CardType1 from "./CardType1";
-import Link from "next/link";
-import { Edit, EditDocument } from "@mui/icons-material";
+import EditIssueButton from "./EditIssueButton";
 
 interface Props {
   params: { id: string };
@@ -27,13 +27,7 @@ const IssueDetailPage = async ({ params }: Props) => {
         mt={2}
       >
         <Link href={`/issues/${issue.id}/edit`}>
-          <Button
-            variant="contained"
-            size="small"
-          >
-            <EditDocument fontSize="small" />
-            <Typography marginLeft={2}>Update</Typography>
-          </Button>
+          <EditIssueButton />
         </Link>
       </Box>
     </Box>
