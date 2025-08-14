@@ -1,15 +1,25 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridRowsProp,
+  GridColDef,
+  GridColumnVisibilityModel,
+} from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
-interface IssueTableProps {
+interface TableType1Props {
   rows: GridRowsProp;
   columns: GridColDef[];
+  columnVisibilityModel: GridColumnVisibilityModel;
 }
 
-const IssueTable = ({ rows, columns }: IssueTableProps) => {
+const TableType1 = ({
+  rows,
+  columns,
+  columnVisibilityModel,
+}: TableType1Props) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,6 +35,7 @@ const IssueTable = ({ rows, columns }: IssueTableProps) => {
       marginBottom={2}
     >
       <DataGrid
+        columnVisibilityModel={columnVisibilityModel}
         showToolbar
         sx={{
           "& .MuiDataGrid-columnHeaderTitle": {
@@ -39,4 +50,4 @@ const IssueTable = ({ rows, columns }: IssueTableProps) => {
   );
 };
 
-export default IssueTable;
+export default TableType1;

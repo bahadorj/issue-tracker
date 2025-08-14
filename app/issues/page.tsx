@@ -1,26 +1,16 @@
 import { prisma } from "@/prisma/prisma";
-import { Box, Button, Typography } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import React from "react";
-import IssueTable from "./IssueTable";
+import IssueTable from "./new/IssueTable";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 50 },
-    { field: "title", headerName: "Title" },
-    { field: "description", headerName: "Description", width: 200 },
-    { field: "status", headerName: "Status" },
-    { field: "createdAt", headerName: "Created At", width: 180 },
-    { field: "updatedAt", headerName: "Updated At", width: 180 },
-  ];
+
   return (
     <Box>
       <Typography variant="h3">Issues</Typography>
-      <IssueTable
-        rows={issues}
-        columns={columns}
-      />
+      <IssueTable rows={issues} />
+
       <Button
         variant="contained"
         type="button"
