@@ -8,10 +8,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
@@ -24,34 +23,45 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 // }
 
 const NewIssuePage = () => {
+  // Hooks
   const router = useRouter();
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
+
+  // react-hook-form - useForm
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
+    defaultValues: {
+      description: "description",
+    },
   });
+
+  const onSubmit: SubmitHandler<IssueForm> = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // axios - post
+      await axios.post("/api/issues", data);
+      // useRouter - push
+      router.push("/issues");
+    } catch (error) {
+      setError("root", { message: "useForm -> setError -> root Error" });
+    }
+  };
 
   return (
     <Box
-      onSubmit={handleSubmit(async (data) => {
-        try {
-          setSubmitting(true);
-          await axios.post("/api/issues", data);
-          router.push("/issues");
-        } catch (error) {
-          setSubmitting(false);
-          setError("Unexpected Error");
-        }
-      })}
       component={"form"}
       sx={{ width: 400 }}
+      // react-hook-form - handleSubmit
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Typography variant="h3">New Issue</Typography>
       <TextField
+        // react-hook-form - register
         {...register("title")}
         fullWidth
         variant="outlined"
@@ -61,6 +71,7 @@ const NewIssuePage = () => {
       />
       {errors.title && <Alert severity="error">{errors.title.message}</Alert>}
       <TextField
+        // react-hook-form - register
         {...register("description")}
         fullWidth
         variant="outlined"
@@ -74,13 +85,12 @@ const NewIssuePage = () => {
         <Alert severity="error">{errors.description.message}</Alert>
       )}
       <Button
-        disabled={submitting}
-        onClick={() => setError("")}
+        disabled={isSubmitting}
         type="submit"
         variant="contained"
       >
-        Submit New Issue
-        {submitting && (
+        {!isSubmitting ? "Submit New Issue" : "Submiting..."}
+        {isSubmitting && (
           <CircularProgress
             size={20}
             color="inherit"
@@ -90,14 +100,13 @@ const NewIssuePage = () => {
 
       {/* Alert */}
 
-      {error !== "" && (
+      {errors.root && (
         <Alert
           sx={{ marginTop: "10px" }}
           severity="error"
           variant="outlined"
-          onClose={() => setError("")}
         >
-          {error}
+          {errors.root.message}
         </Alert>
       )}
     </Box>

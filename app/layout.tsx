@@ -23,12 +23,10 @@ export default function RootLayout({
             role="main"
             maxWidth="xl"
             fixed
-            sx={
-              {
-                // bgcolor: "gray",
-                // textAlign: "center",
-              }
-            }
+            // sx={{
+            //   bgcolor: "gray",
+            //   textAlign: "center",
+            // }}
           >
             <NavBar />
             {children}

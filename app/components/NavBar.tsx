@@ -24,7 +24,6 @@ const NavBar = () => {
         direction={"row"}
         // bgcolor={"GrayText"}
         display={"flex"}
-        width={"100vh"}
         alignItems={"center"}
       >
         {/* Home Icon */}
