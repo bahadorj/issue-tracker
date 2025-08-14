@@ -2,9 +2,11 @@ import { prisma } from "@/prisma/prisma";
 import { Box, Button, Chip, Typography } from "@mui/material";
 import React from "react";
 import IssueTable from "./new/IssueTable";
+import delay from "delay";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
+  await delay(2000);
 
   return (
     <Box>
