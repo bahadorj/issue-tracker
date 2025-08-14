@@ -63,6 +63,7 @@ const IssueTable = ({ rows }: IssueTableProps) => {
       rows={rows}
       columns={columns}
       columnVisibilityModel={columnVisibilityModel}
+      link="/issues/"
     />
   );
 };
