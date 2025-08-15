@@ -20,4 +20,10 @@ const IssuesPage = async () => {
   );
 };
 
+// Server-side Cache
+// export const dynamic = "force-dynamic";
+// export const revalidate = 0;
+
+// Client-side Cache
+
 export default IssuesPage;
