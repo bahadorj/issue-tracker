@@ -12,11 +12,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
+import { issueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import { Issue } from "@/app/generated/prisma";
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 interface Props {
   issue?: Issue;
@@ -39,7 +39,7 @@ const IssueForm = ({ issue }: Props) => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
     defaultValues: {
       description: "description",
     },

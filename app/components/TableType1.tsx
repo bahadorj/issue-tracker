@@ -1,12 +1,12 @@
 "use client";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Collapse } from "@mui/material";
 import {
   DataGrid,
-  GridRowsProp,
   GridColDef,
   GridColumnVisibilityModel,
   GridRowSelectionModel,
+  GridRowsProp,
 } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -63,14 +63,16 @@ const TableType1 = ({
         />
       </Box>
       <Link href={`${link}${selectedId}`}>
-        <Button
-          disabled={rowSelectionModel.ids.size === 0}
-          sx={{ marginTop: 2 }}
-          variant="contained"
-          color="secondary"
-        >
-          {`Go to detail page of issue id:  ${selectedId}`}
-        </Button>
+        <Collapse in={rowSelectionModel.ids.size !== 0}>
+          <Button
+            sx={{ marginTop: 2 }}
+            variant="contained"
+            color="secondary"
+            size="small"
+          >
+            More information about the issue...
+          </Button>
+        </Collapse>
       </Link>
     </Box>
   );
