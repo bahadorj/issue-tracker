@@ -48,8 +48,10 @@ const IssueForm = ({ issue }: Props) => {
   const onSubmit: SubmitHandler<IssueFormData> = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
+      // axios - patch
+      if (issue) await axios.patch("/api/issues/" + issue.id, data);
       // axios - post
-      await axios.post("/api/issues", data);
+      else await axios.post("/api/issues", data);
       // useRouter - push
       router.push("/issues");
     } catch (error) {
@@ -96,9 +98,10 @@ const IssueForm = ({ issue }: Props) => {
         type="submit"
         variant="contained"
       >
-        {!isSubmitting ? "Submit New Issue" : "Submiting..."}
+        {issue ? "Update Issue" : "Submit New Issue"}
         {isSubmitting && (
           <CircularProgress
+            sx={{ marginLeft: 2 }}
             size={20}
             color="inherit"
           />
