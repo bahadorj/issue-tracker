@@ -5,8 +5,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  MenuItem,
+  Select,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
@@ -15,8 +18,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { issueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import { Issue } from "@/app/generated/prisma";
+import { useState } from "react";
+import { statusColor } from "@/app/components/consts";
 
 type IssueFormData = z.infer<typeof issueSchema>;
+
+const statusOptions = Object.values(issueSchema.shape.status.enum);
 
 interface Props {
   issue?: Issue;
@@ -44,6 +51,12 @@ const IssueForm = ({ issue }: Props) => {
       description: "description",
     },
   });
+
+  const [status, setStatus] = useState(
+    issue ? issue?.status : statusOptions[0],
+  );
+
+  const theme = useTheme();
 
   const onSubmit: SubmitHandler<IssueFormData> = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -93,6 +106,34 @@ const IssueForm = ({ issue }: Props) => {
       {errors.description && (
         <Alert severity="error">{errors.description.message}</Alert>
       )}
+      <Select
+        {...register("status")}
+        label="Status"
+        defaultValue={issue?.status}
+        size="small"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        sx={{
+          marginBottom: 1,
+          "& .MuiSelect-outlined": {
+            bgcolor: theme.palette[statusColor[status]].main,
+            color: "white",
+          },
+        }}
+        variant="outlined"
+      >
+        {statusOptions.map((s) => (
+          <MenuItem
+            key={s}
+            value={s}
+            sx={{ bgcolor: statusColor[s] }}
+            color={statusColor[s]}
+          >
+            {s}
+          </MenuItem>
+        ))}
+      </Select>
+      <div />
       <Button
         disabled={isSubmitting}
         type="submit"

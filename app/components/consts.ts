@@ -3,11 +3,10 @@ export const statusColor: Record<
   | "success"
   | "info"
   | "error"
-  | "default"
+  // | "default"
   | "primary"
   | "secondary"
   | "warning"
-  | undefined
 > = {
   OPEN: "success",
   IN_PROGRESS: "info",
